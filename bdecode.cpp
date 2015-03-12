@@ -31,8 +31,13 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "bdecode.hpp"
+#include <boost/system/error_code.hpp>
 #include <limits>
 #include <cstring> // for memset
+
+#ifndef BOOST_SYSTEM_NOEXCEPT
+#define BOOST_SYSTEM_NOEXCEPT throw()
+#endif
 
 #if defined WIN32 || defined __MINGW32__
 // windows
