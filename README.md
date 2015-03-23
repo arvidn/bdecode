@@ -9,6 +9,8 @@ the header file, [bdecode.hpp](https://github.com/arvidn/bdecode/blob/master/bde
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=hydri&url=https://github.com/arvidn/bdecode&title=bdecode&language=&tags=github&category=software)
 
+For more information, see [this blog post](http://blog.libtorrent.org/2015/03/bdecode-parsers/)
+
 # license
 
 This code is released under the BSD license.
