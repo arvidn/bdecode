@@ -331,7 +331,7 @@ namespace libtorrent
 	bdecode_node::type_t bdecode_node::type() const
 	{
 		if (m_token_idx == -1) return none_t;
-		return (bdecode_node::type_t)m_root_tokens[m_token_idx].type;
+		return static_cast<bdecode_node::type_t>(m_root_tokens[m_token_idx].type);
 	}
 
 	bdecode_node::operator bool() const
@@ -749,7 +749,9 @@ namespace libtorrent
 		stack_frame* stack = TORRENT_ALLOCA(stack_frame, depth_limit);
 
 		char const* const orig_start = start;
-		if (start == end) return 0;
+
+		if (start == end)
+			TORRENT_FAIL_BDECODE(bdecode_errors::unexpected_eof);
 
 		while (start <= end)
 		{
@@ -872,7 +874,10 @@ namespace libtorrent
 					start = parse_int(start, end, ':', len, e);
 					if (e)
 						TORRENT_FAIL_BDECODE(e);
-					if (start + len + 1 > end)
+
+					// remaining buffer size excluding ':'
+					const ptrdiff_t buff_size = end - start - 1;
+					if (len > buff_size)
 						TORRENT_FAIL_BDECODE(bdecode_errors::unexpected_eof);
 					if (len < 0)
 						TORRENT_FAIL_BDECODE(bdecode_errors::overflow);
@@ -989,7 +994,7 @@ done:
 			line_len += 4;
 			break;
 		}
-	
+
 		if (line_len > limit) return -1;
 		return line_len;
 	}
@@ -1005,7 +1010,7 @@ done:
 			else
 			{
 				char tmp[5];
-				snprintf(tmp, sizeof(tmp), "\\x%02x", (unsigned char)str[i]);
+				snprintf(tmp, sizeof(tmp), "\\x%02x", boost::uint8_t(str[i]));
 				ret += tmp;
 			}
 		}
