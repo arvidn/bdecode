@@ -433,9 +433,9 @@ int main()
 		printf("%s\n", print_entry(e).c_str());
 	}
 
-	// test unexpected EOF (really expected terminator)
+	// test unexpected EOF in string length
 	{
-		char b[] = "l2:..0"; // expected terminating 'e' instead of '0'
+		char b[] = "l2:..0"; // expected ':' delimiter instead of EOF
 
 		bdecode_node e;
 		error_code ec;
@@ -443,7 +443,7 @@ int main()
 		int ret = bdecode(b, b + sizeof(b)-1, e, ec, &pos);
 		TEST_EQUAL(ret, -1);
 		TEST_EQUAL(pos, 6);
-		TEST_EQUAL(ec, error_code(bdecode_errors::expected_colon));
+		TEST_EQUAL(ec, error_code(bdecode_errors::unexpected_eof));
 		printf("%s\n", print_entry(e).c_str());
 	}
 
